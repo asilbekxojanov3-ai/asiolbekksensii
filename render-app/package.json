@@ -1,0 +1,13 @@
+{
+  "name": "asilbek-sensei",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Yapon tilini o‘zbek tilida o‘rganish platformasi",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.13.0 <25.0.0"
+  }
+}
+

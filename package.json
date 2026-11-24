@@ -1,0 +1,14 @@
+{
+  "name": "asilbek-sensei",
+  "version": "1.0.0",
+  "description": "Yapon tilini o'rganish platformasi",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^12.0.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

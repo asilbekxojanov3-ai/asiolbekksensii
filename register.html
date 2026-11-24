@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ro'yxatdan o'tish | ASILBEK SENSEI</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body data-page="register">
+  <header><h1>ASILBEK SENSEI <span class="muted">アシルベク先生</span></h1></header>
+  <nav></nav>
+  <main>
+    <h2 class="center">Ro'yxatdan o'tish</h2>
+    <form id="form" autocomplete="on">
+      <label>To'liq ism<input name="fullName" required minlength="2" maxlength="60" autocomplete="name"></label>
+      <label>Username<input name="username" required pattern="[a-zA-Z0-9_]{3,20}" title="3-20 ta harf, raqam yoki _" autocomplete="username"></label>
+      <label>Email<input type="email" name="email" required autocomplete="email"></label>
+      <label>Parol (kamida 8 belgi)<input type="password" name="password" required minlength="8" maxlength="72" autocomplete="new-password"></label>
+      <p class="error" id="error"></p>
+      <button type="submit">Ro'yxatdan o'tish</button>
+    </form>
+    <p class="center muted">Akkauntingiz bormi? <a href="login.html">Kirish</a></p>
+  </main>
+  <footer><p>&copy; 2026 Asilbek Sensei</p></footer>
+</body>
+</html>

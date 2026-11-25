@@ -89,13 +89,14 @@ async function provisionAdmin() {
   const password = process.env.ADMIN_PASSWORD;
   if (!email || !password) return;
   if (password.length < 12) throw new Error("ADMIN_PASSWORD kamida 12 belgidan iborat bo‘lishi kerak.");
-  const existing = database.prepare("SELECT id FROM users WHERE email = ?").get(email);
-  if (existing) {
-    database.prepare("UPDATE users SET is_admin = 1 WHERE id = ?").run(existing.id);
-    return;
-  }
   const salt = crypto.randomBytes(16).toString("hex");
   const hash = await scrypt(password, salt, 64);
+  const existing = database.prepare("SELECT id FROM users WHERE email = ?").get(email);
+  if (existing) {
+    database.prepare("UPDATE users SET password_salt = ?, password_hash = ?, is_admin = 1 WHERE id = ?")
+      .run(salt, hash.toString("hex"), existing.id);
+    return;
+  }
   const username = `admin_${crypto.randomBytes(5).toString("hex")}`;
   database.prepare("INSERT INTO users(name,username,email,password_salt,password_hash,is_admin) VALUES(?,?,?,?,?,1)")
     .run("Asilbek Sensei Admin", username, email, salt, hash.toString("hex"));

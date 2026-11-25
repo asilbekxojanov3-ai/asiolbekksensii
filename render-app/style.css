@@ -255,6 +255,17 @@ input, .admin-form textarea { border-color: #dcded5; border-radius: 9px; backgro
 #natija { background: #ecefe8; }
 footer { border-color: var(--line); }
 
+/* Hash navigation keeps each learning area in its own screen. */
+[hidden] { display: none !important; }
+main > [data-view] { min-height: 55vh; }
+#main-nav a[aria-current="page"] { color: var(--green); font-weight: 700; }
+.site-header { gap: 18px; }
+.site-header nav { flex: 1; }
+.site-header nav ul { justify-content: center; gap: clamp(12px, 2vw, 25px); }
+.site-header nav a { white-space: nowrap; }
+.content-section { animation: page-in .24s ease both; }
+@keyframes page-in { from { opacity: .7; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
 @media (max-width: 980px) {
   .site-header { width: min(100% - 40px, 760px); }
   .site-header nav { background: var(--paper); }
@@ -280,5 +291,6 @@ footer { border-color: var(--line); }
   .content-section { padding-block: 58px; }
   .dashboard-grid { padding-bottom: 48px; }
   .menu-toggle { color: var(--green); }
+  main > [data-view] { min-height: 60vh; }
 }
 

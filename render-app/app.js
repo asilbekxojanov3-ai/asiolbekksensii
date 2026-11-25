@@ -16,6 +16,41 @@ async function api(url, options = {}) {
 
 const menuButton = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector("#main-nav");
+
+// Har bir katta bo‘limni alohida sahifa ko‘rinishida ochamiz. URL hash bo‘lgani uchun
+// o‘quvchi sahifani yangilasa ham tanlagan bo‘limi ochiq qoladi.
+const pageForId = {
+  "bosh-sahifa": "home", kurslar: "courses", n5: "courses", n4: "courses", n3: "courses", n2: "courses", n1: "courses",
+  yonalishlar: "learning", uslub: "home", "qanday-boshlash": "getting-started", darslar: "lessons",
+  yozuvlar: "alphabet", kanji: "kanji", lugat: "vocabulary", grammatika: "grammar",
+  tinglash: "listening", oqish: "reading", mashq: "quiz", savollar: "faq", profil: "profile",
+  kirish: "login", "royxatdan-otish": "signup", admin: "admin",
+};
+const pageNodes = [...document.querySelector("main").children];
+pageNodes.forEach((node) => {
+  const id = node.id;
+  node.dataset.view = id === "bosh-sahifa" ? "home"
+    : id === "" && node.matches(".proof-strip, .dashboard-grid") ? "home"
+    : pageForId[id] || "home";
+});
+
+function showPageFromHash() {
+  const hash = decodeURIComponent(location.hash.slice(1)) || "bosh-sahifa";
+  let page = pageForId[hash] || "home";
+  if (page === "admin" && !currentUser?.isAdmin) page = "login";
+  pageNodes.forEach((node) => { node.hidden = node.dataset.view !== page; });
+  document.querySelectorAll("#main-nav a").forEach((link) => {
+    if (pageForId[link.hash.slice(1)] === page) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
+  const target = document.getElementById(hash);
+  if (target && target.closest("[data-view]")?.dataset.view === page) {
+    requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+  } else window.scrollTo({ top: 0, behavior: "smooth" });
+}
+window.addEventListener("hashchange", showPageFromHash);
+showPageFromHash();
+
 menuButton?.addEventListener("click", () => {
   const open = menuButton.getAttribute("aria-expanded") === "true";
   menuButton.setAttribute("aria-expanded", String(!open));
@@ -185,6 +220,7 @@ async function refreshSession() {
   renderLessons();
   renderProfile();
   renderAdmin();
+  showPageFromHash();
   const actions = document.querySelector(".header-actions");
   actions.querySelector(".account-name")?.remove();
   actions.querySelector(".logout-header")?.remove();
@@ -238,7 +274,7 @@ document.querySelectorAll("[data-auth]").forEach((form) => form.addEventListener
     message.textContent = `Xush kelibsiz, ${result.user.name}! Hisobingiz saqlandi.`;
     form.reset();
     await refreshSession();
-    if (currentUser?.isAdmin) document.querySelector("#admin").scrollIntoView({ behavior: "smooth" });
+    location.hash = currentUser?.isAdmin ? "#admin" : "#profil";
   } catch (error) { message.textContent = error.message; }
 }));
 
